@@ -1,0 +1,7 @@
+cd ~/.ssh
+
+ssh-keygen -t rsa -b 4096 -C "sacchin2@gmail.com"
+
+eval $(ssh-agent -s)
+
+ssh-add
