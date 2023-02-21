@@ -3,6 +3,8 @@ import gym
 import os
 import numpy as np
 from neat import nn, population, statistics, parallel
+import cv2
+import time
 
 
 ### User Params ###
@@ -38,7 +40,11 @@ def simulate_species(net, env, episodes=1, steps=5000, render=False):
             action = np.argmax(outputs)
             inputs, reward, done, _ = env.step(action)
             if render:
-                env.render()
+                screen = env.render(mode = 'rgb_array')
+
+                cv2.imshow('PACMAN',screen)
+                cv2.waitKey(1)
+                
             if done:
                 break
             cum_reward += reward
@@ -105,7 +111,7 @@ def train_network(env):
     for i in range(100):
         simulate_species(winner_net, env, 1, args.max_steps, render=True)
 
-my_env = gym.make(game_name)
+my_env = gym.make(game_name, render_mode = 'rgb_array')
 print("Input Nodes: %s" % str(len(my_env.observation_space.high)))
 print("Output Nodes: %s" % str(my_env.action_space.n))
 train_network(my_env)
